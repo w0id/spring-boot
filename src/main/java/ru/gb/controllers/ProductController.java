@@ -32,7 +32,7 @@ public class ProductController {
     }
 
     @PostMapping("/products/add_product")
-    public void addProduct(@RequestParam String name, @RequestParam double cost) {
+    public void addProduct(String name, double cost) {
         productService.addProduct(name, cost);
     }
 
