@@ -40,12 +40,7 @@ public class ProductRepository {
         return products.stream().filter(p -> p.getId().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Товар не найден"));
     }
 
-    public void addProduct(final String name, final double cost) {
-        Product product = new Product();
-        Long id = products.stream().max(Comparator.comparing(m -> m.getId())).get().getId();
-        product.setId(++id);
-        product.setName(name);
-        product.setCost(cost);
-        products.add(product);
+    public void addProduct(final Long id, final String name, final double cost) {
+        products.add(new Product(id, name, cost));
     }
 }
