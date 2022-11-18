@@ -2,7 +2,9 @@ package ru.gb.factories;
 
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SessionFactory {
 
     private org.hibernate.SessionFactory factory;
