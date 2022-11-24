@@ -9,7 +9,6 @@ import ru.gb.services.ProductRepositoryNameService;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,7 +20,6 @@ public class ProductRepository implements IProductDao {
     public ProductRepository(final ProductRepositoryNameService productRepositoryNameService) {
         this.productRepositoryNameService = productRepositoryNameService;
     }
-    private static List<Product> products = new ArrayList<>();
 
     @PostConstruct
     public void init() {
