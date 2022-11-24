@@ -76,15 +76,13 @@ public class ProductRepository implements IProductDao {
     }
 
     @Override
-    public void changeCost(Long id, final double newCost) {
+    public Product changeCost(Product product) {
         try (Session session = factory.getSession()) {
             session.beginTransaction();
-            session.createQuery("update Product p set p.cost = :cost where p.id = :id")
-                            .setParameter("cost", newCost)
-                                    .setParameter("id", id)
-                                            .executeUpdate();
+            session.saveOrUpdate(product);
             session.getTransaction().commit();
         }
+        return product;
     }
 
 }

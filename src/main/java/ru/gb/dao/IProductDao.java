@@ -10,6 +10,5 @@ public interface IProductDao {
     Product findById(Long id);
     void deleteProduct(final Long id);
     void addProduct(Product product);
-
-    void changeCost(Long id, double v);
+    Product changeCost(Product product);
 }

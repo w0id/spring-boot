@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.gb.data.Product;
 import ru.gb.repositories.ProductRepository;
 
-import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -26,7 +25,8 @@ public class ProductService {
 
     public void changeCost(final Long productId, final Integer delta) {
         Product product = productRepository.findById(productId);
-        productRepository.changeCost(productId, product.getCost() + delta);
+        product.setCost(product.getCost() + delta);
+        productRepository.changeCost(product);
     }
 
     public void addProduct(final String name, final double cost) {
