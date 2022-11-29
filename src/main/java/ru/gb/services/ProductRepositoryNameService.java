@@ -11,7 +11,6 @@ public class ProductRepositoryNameService {
 
     public void InitName(Product product) {
         Random random = new Random();
-        product.setId(productSequence++);
         product.setName("Товар №" + random.nextInt(99));
         product.setCost(Math.round(100000d * random.nextDouble()) / 100d);
     }

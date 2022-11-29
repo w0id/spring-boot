@@ -1,45 +1,88 @@
 package ru.gb.repositories;
 
+import org.hibernate.Session;
 import org.springframework.stereotype.Component;
+import ru.gb.dao.IProductDao;
 import ru.gb.data.Product;
+import ru.gb.factories.SessionFactory;
 import ru.gb.services.ProductRepositoryNameService;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Component
-public class ProductRepository {
+public class ProductRepository implements IProductDao {
     private ProductRepositoryNameService productRepositoryNameService;
+
+    SessionFactory factory = new SessionFactory();
 
     public ProductRepository(final ProductRepositoryNameService productRepositoryNameService) {
         this.productRepositoryNameService = productRepositoryNameService;
     }
-    private static List<Product> products = new ArrayList<>();
 
     @PostConstruct
     public void init() {
+        factory.init();
         for (int i = 0; i < 5; i++) {
             Product product = new Product();
             productRepositoryNameService.InitName(product);
-            products.add(product);
+            this.addProduct(product);
         }
     }
 
+    @PreDestroy
+    public void shutdown() {
+        factory.shutdown();
+    }
+
+    @Override
     public List<Product> getAllProducts() {
-        return Collections.unmodifiableList(products);
+        try (Session session = factory.getSession()) {
+            session.beginTransaction();
+            List<Product> products = session.createQuery("select p from Product p order by p.id").getResultList();
+            session.getTransaction().commit();
+            return products;
+        }
     }
 
+    @Override
+    public Product findById(final Long id) {
+        try (Session session = factory.getSession()) {
+            session.beginTransaction();
+            Product product = session.get(Product.class, id);
+            session.getTransaction().commit();
+            return product;
+        }
+    }
+
+    @Override
     public void deleteProduct(final Long id) {
-        products.removeIf(p -> p.getId().equals(id));
+        try (Session session = factory.getSession()) {
+            session.beginTransaction();
+            Product product = session.get(Product.class, id);
+            session.delete(product);
+            session.getTransaction().commit();
+        }
     }
 
-    public Product findById(Long id) {
-        return products.stream().filter(p -> p.getId().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Товар не найден"));
+    @Override
+    public void addProduct(Product product) {
+        try (Session session = factory.getSession()) {
+            session.beginTransaction();
+            session.save(product);
+            session.getTransaction().commit();
+        }
     }
 
-    public void addProduct(final Long id, final String name, final double cost) {
-        products.add(new Product(id, name, cost));
+    @Override
+    public Product changeCost(Product product) {
+        try (Session session = factory.getSession()) {
+            session.beginTransaction();
+            session.saveOrUpdate(product);
+            session.getTransaction().commit();
+        }
+        return product;
     }
+
 }
