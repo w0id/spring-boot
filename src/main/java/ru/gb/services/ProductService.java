@@ -1,37 +1,42 @@
 package ru.gb.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.gb.data.Product;
-import ru.gb.repositories.ProductRepository;
+import ru.gb.repositories.IProductRepository;
 
 import java.util.List;
-
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    @Autowired
+    private IProductRepository productRepository;
 
-    public ProductService(final ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow();
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.getAllProducts();
+    public List<Product> getProducts() {
+        return productRepository.findAll();
     }
 
-    public void deleteProduct(final Long id) {
-        productRepository.deleteProduct(id);
+    public Product addProduct(String name, double cost) {
+        Product product = new Product(name, cost);
+        productRepository.save(product);
+        return null;
     }
 
-    public void changeCost(final Long productId, final Integer delta) {
-        Product product = productRepository.findById(productId);
-        product.setCost(product.getCost() + delta);
-        productRepository.changeCost(product);
+    public void delProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
-    public void addProduct(final String name, final double cost) {
-        Product product = new Product(null, name, cost);
-        productRepository.addProduct(product);
+    public List<Product> getProductFilter(Double min, Double max) {
+        if (null == max) {
+            return productRepository.findAllByCostLessThan(min);
+        } else if (null == min) {
+            return productRepository.findAllByCostGreaterThan(max);
+        } else {
+            return productRepository.findAllByCostBetween(min, max);
+        }
     }
 }
-
