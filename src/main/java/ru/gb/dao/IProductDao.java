@@ -1,6 +1,7 @@
 package ru.gb.dao;
 
 import org.springframework.stereotype.Component;
+import ru.gb.data.Customer;
 import ru.gb.data.Product;
 
 import java.util.List;
@@ -8,7 +9,5 @@ import java.util.List;
 public interface IProductDao {
     List<Product> getAllProducts();
     Product findById(Long id);
-    void deleteProduct(final Long id);
-    void addProduct(Product product);
-    Product changeCost(Product product);
+    List<Customer> getCustomersById(Long id);
 }
