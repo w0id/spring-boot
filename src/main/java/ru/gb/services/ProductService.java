@@ -16,10 +16,6 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
-    }
-
     public Product addProduct(String name, double cost) {
         Product product = new Product(name, cost);
         productRepository.save(product);
