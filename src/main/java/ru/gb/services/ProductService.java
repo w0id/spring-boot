@@ -31,12 +31,6 @@ public class ProductService {
     }
 
     public List<Product> getProductFilter(Double min, Double max) {
-        if (null == max) {
-            return productRepository.findAllByCostLessThan(min);
-        } else if (null == min) {
-            return productRepository.findAllByCostGreaterThan(max);
-        } else {
-            return productRepository.findAllByCostBetween(min, max);
-        }
+        return productRepository.findAllByCostBetween(min, max);
     }
 }
