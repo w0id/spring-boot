@@ -2,7 +2,6 @@ package ru.gb.services;
 
 import org.springframework.stereotype.Service;
 import ru.gb.data.Product;
-
 import java.util.Random;
 
 @Service

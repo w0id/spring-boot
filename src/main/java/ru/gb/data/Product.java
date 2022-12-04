@@ -24,4 +24,3 @@ public class Product {
         this.cost = cost;
     }
 }
-

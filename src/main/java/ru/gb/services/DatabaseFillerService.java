@@ -17,11 +17,10 @@ public class DatabaseFillerService {
 
     @EventListener(ApplicationReadyEvent.class)
     public void fillDatabaseOnStartup() {
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             Product product = new Product();
             productGeneratorService.InitProduct(product);
             productRepository.save(product);
         }
     }
-
 }
