@@ -5,7 +5,8 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
     $scope.deleteProduct = function (studentId) {
         $http.get(contextPath + '/products/delete/' + studentId)
             .then(function (response) {
-                $scope.loadProducts();
+                $scope.setActive(true);
+                $scope.loadProducts(1);
             });
     }
 
@@ -18,7 +19,7 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
                 delta: delta
             }
         }).then(function (response) {
-            $scope.loadProducts();
+            $scope.loadProducts($scope.page);
         });
     }
 
@@ -31,7 +32,7 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
                 cost: $scope.data.Cost
             }
         }).then(function (response) {
-            $scope.loadProducts();
+            $scope.loadProducts($scope.page);
             $scope.data = {};
         });
     }
@@ -44,7 +45,7 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
             params: {
                 min: $scope.filter ? $scope.filter.min : null,
                 max: $scope.filter ? $scope.filter.max : null,
-                p: $scope.filter ? page : null
+                p: $scope.filter ? $scope.page : null
             }
         })
             .then(function (response) {
@@ -70,10 +71,8 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
                     });
                 }
             } else {
-                var active = document.getElementsByClassName("active");
-                var static = document.getElementsByClassName("static");
-                active[0].classList.toggle("active");
-                static[0].classList.toggle("active");
+                document.getElementsByClassName("active")[0].classList.toggle("active");
+                document.getElementsByClassName("static")[0].classList.toggle("active");
             }
     }
 
