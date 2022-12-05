@@ -22,8 +22,7 @@ public class ProductService {
 
     public Product addProduct(String name, double cost) {
         Product product = new Product(name, cost);
-        productRepository.save(product);
-        return null;
+        return productRepository.save(product);
     }
 
     public void delProduct(Long id) {
