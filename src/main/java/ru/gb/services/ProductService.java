@@ -16,10 +16,6 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public List<Product> getProducts() {
-        return productRepository.findAll();
-    }
-
     public Product addProduct(String name, double cost) {
         Product product = new Product(name, cost);
         productRepository.save(product);
@@ -31,12 +27,6 @@ public class ProductService {
     }
 
     public List<Product> getProductFilter(Double min, Double max) {
-        if (null == max) {
-            return productRepository.findAllByCostLessThan(min);
-        } else if (null == min) {
-            return productRepository.findAllByCostGreaterThan(max);
-        } else {
-            return productRepository.findAllByCostBetween(min, max);
-        }
+        return productRepository.findAllByCostBetween(min, max);
     }
 }

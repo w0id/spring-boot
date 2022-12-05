@@ -8,7 +8,5 @@ import java.io.Serializable;
 import java.util.List;
 @Repository
 public interface IProductRepository extends JpaRepository<Product, Serializable> {
-    public List<Product> findAllByCostLessThan(Double min);
-    public List<Product> findAllByCostGreaterThan(Double max);
     public List<Product> findAllByCostBetween(Double min, Double max);
 }

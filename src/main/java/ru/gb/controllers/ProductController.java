@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-
     @Autowired
     private ProductService productService;
 
@@ -20,12 +19,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts(@RequestParam(value = "min",required = false) Double min,@RequestParam(value = "max",required = false) Double max) {
-        if (null == min && null == max) {
-            return productService.getProducts();
-        } else {
-            return productService.getProductFilter(min, max);
-        }
+    public List<Product> getProducts(@RequestParam(value = "min",defaultValue = "0") Double min,@RequestParam(value = "max",defaultValue = Double.MAX_VALUE + "") Double max) {
+        return productService.getProductFilter(min, max);
     }
 
     @PostMapping
