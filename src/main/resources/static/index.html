@@ -17,10 +17,10 @@
         <div class="container d-flex flex-wrap justify-content-center">
             <nav>
                 <ul id="pagination" class="pagination justify-content-center">
-                    <li id="page-item" class="page-item active">
+                    <li class="page-item static active">
                         <a class="page-link" href="" ng-click="setActive();loadProducts($index+1)">1</a>
                     </li>
-                    <li id="page-item" class="page-item" ng-repeat="p in [].constructor(totalPages-1) track by $index">
+                    <li class="page-item" ng-repeat="p in [].constructor(totalPages-1) track by $index">
                         <a class="page-link" href="" ng-click="setActive();loadProducts($index+2)">{{ $index+2 }}</a>
                     </li>
                 </ul>

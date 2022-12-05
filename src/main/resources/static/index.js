@@ -44,38 +44,48 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
             params: {
                 min: $scope.filter ? $scope.filter.min : null,
                 max: $scope.filter ? $scope.filter.max : null,
-                p: $scope.filter ? $scope.page : null
+                p: $scope.filter ? page : null
             }
         })
             .then(function (response) {
                 $scope.ProductsList = response.data.content;
                 $scope.page = response.data.pageable.pageNumber + 1;
                 $scope.totalPages = response.data.totalPages;
-                console.log(response.data);
+                if ($scope.page > $scope.totalPages) {
+                    $scope.page = $scope.totalPages -1;
+                }
                 $scope.count = response.data.content.length;
             });
     };
 
-    $scope.setActive = function () {
-        var header = $document[0].getElementById("pagination");
-        var btns = header.getElementsByClassName("page-item");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function() {
-                var current = $document[0].getElementsByClassName("active");
-                current[0].className = current[0].className.replace(" active", "");
-                this.className += " active";
-            });
-        }
+    $scope.setActive = function (static) {
+            if (static == null) {
+                var header = $document[0].getElementById("pagination");
+                var btns = header.getElementsByClassName("page-item");
+                for (var i = 0; i < btns.length; i++) {
+                    btns[i].addEventListener("click", function () {
+                        var current = $document[0].getElementsByClassName("active");
+                        current[0].className = current[0].className.replace(" active", "");
+                        this.className += " active";
+                    });
+                }
+            } else {
+                var active = document.getElementsByClassName("active");
+                var static = document.getElementsByClassName("static");
+                active[0].classList.toggle("active");
+                static[0].classList.toggle("active");
+            }
     }
 
-    $scope.loadProducts();
-}).controller('range', function ($scope, $http) {
+    $scope.loadProducts(1);
+}).controller('range', function ($scope, $document) {
     $scope.$parent.filter = $scope;
     $(".js-range-slider").ionRangeSlider({
         onFinish: function (data) {
             $scope.min = data.from
             $scope.max = data.to
-            $scope.$parent.loadProducts($scope.$parent.page);
+            $scope.$parent.setActive(true);
+            $scope.$parent.loadProducts(1);
         }
     });
 })
