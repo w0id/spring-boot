@@ -1,51 +1,26 @@
 package ru.gb.data;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "cost")
     private Double cost;
 
-    public Product() {
-    }
-
-    public Product(final Long id, final String name, final Double cost) {
-        this.id = id;
+    public Product(final String name, final Double cost) {
         this.name = name;
-        this.cost = cost;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Double getCost() {
-        return cost;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public void setCost(final Double cost) {
         this.cost = cost;
     }
 }
-

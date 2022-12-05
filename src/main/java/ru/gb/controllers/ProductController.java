@@ -1,39 +1,46 @@
 package ru.gb.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.data.Product;
 import ru.gb.services.ProductService;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("/products")
 public class ProductController {
-
+    @Autowired
     private ProductService productService;
 
-    public ProductController(final ProductService productService) {
-        this.productService = productService;
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProduct(id);
     }
 
-    @GetMapping("/products/delete/{id}")
-    public void deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+    @GetMapping
+    public Page<Product> getProducts(
+            @RequestParam(value = "min",required = false) Double min,
+            @RequestParam(value = "max",required = false) Double max,
+            @RequestParam(value = "p", defaultValue = "1") Integer page
+            ) {
+        if (page < 1) {
+            page = 1;
+        }
+        return productService.getProductFilter(min, max, page);
     }
 
-    @PostMapping("/products/change_cost")
-    public void changeCost(Long productId, Integer delta) {
+    @PostMapping
+    public Product addProduct(@RequestParam String name, @RequestParam double cost) {
+        return productService.addProduct(name, cost);
+    }
+
+    @GetMapping("/delete/{id}")
+    public void delProduct(@PathVariable Long id) {
+        productService.delProduct(id);
+    }
+
+    @PostMapping("/change_cost")
+    public void changeCost(@RequestParam Long productId, @RequestParam Integer delta) {
         productService.changeCost(productId, delta);
     }
-
-
-    @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
-    }
-
-    @PostMapping("/products/add_product")
-    public void addProduct(String name, double cost) {
-        productService.addProduct(name, cost);
-    }
-
 }
