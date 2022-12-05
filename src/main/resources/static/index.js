@@ -2,8 +2,8 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
     const contextPath = 'http://localhost:9099/app'
     $scope.filter = {}
 
-    $scope.deleteProduct = function (studentId) {
-        $http.get(contextPath + '/products/delete/' + studentId)
+    $scope.deleteProduct = function (productId) {
+        $http.get(contextPath + '/products/delete/' + productId)
             .then(function (response) {
                 $scope.setActive(true);
                 $scope.loadProducts(1);
