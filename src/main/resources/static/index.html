@@ -52,9 +52,9 @@
             <td>{{p.id}}</td>
             <td>{{p.name}}</td>
             <td>
-                <button class="btn btn-outline-primary" ng-click="changeCost(p.id, -10)">-</button>
+                <button class="btn btn-outline-primary" ng-click="changeCost(p, -10)">-</button>
                 {{p.cost}}
-                <button class="btn btn-outline-primary" ng-click="changeCost(p.id, 10)">+</button>
+                <button class="btn btn-outline-primary" ng-click="changeCost(p, 10)">+</button>
             </td>
             <td>
                 <button class="btn btn-outline-danger" ng-click="deleteProduct(p.id)">Снять с продажи</button>

@@ -1,46 +1,48 @@
 angular.module('app', []).controller('indexController', function ($scope, $document, $http) {
-    const contextPath = 'http://localhost:9099/app'
+    const contextPath = 'http://localhost:9099/app/api/v1/'
     $scope.filter = {}
 
     $scope.deleteProduct = function (productId) {
-        $http.get(contextPath + '/products/delete/' + productId)
+        $http.delete(contextPath + 'products/' + productId)
             .then(function (response) {
                 $scope.setActive(true);
                 $scope.loadProducts(1);
             });
     }
 
-    $scope.changeCost = function (productId, delta) {
-        $http({
-            url: contextPath + '/products/change_cost',
-            method: 'POST',
-            params: {
-                productId: productId,
-                delta: delta
+    $scope.changeCost = function (product, delta) {
+        body = JSON.stringify(
+            {
+                id: product.id,
+                name: product.name,
+                cost: product.cost + delta
             }
-        }).then(function (response) {
-            $scope.loadProducts($scope.page);
-        });
+        );
+        $http.put(contextPath + 'products', body)
+            .then(function (response) {
+                $scope.loadProducts($scope.page);
+                $scope.data = {};
+            });
     }
 
     $scope.addProduct = function (form) {
-        $http({
-            url: contextPath + '/products/',
-            method: 'POST',
-            params: {
+        body = JSON.stringify(
+            {
                 name: $scope.data.Name,
                 cost: $scope.data.Cost
             }
-        }).then(function (response) {
-            $scope.loadProducts($scope.page);
-            $scope.data = {};
-        });
+        );
+        $http.post(contextPath + 'products', body)
+            .then(function (response) {
+                    $scope.loadProducts($scope.page);
+                    $scope.data = {};
+                });
     }
 
     $scope.loadProducts = function (page) {
         $scope.page = page;
         $http({
-            url: contextPath + '/products',
+            url: contextPath + 'products',
             method: 'GET',
             params: {
                 min: $scope.filter ? $scope.filter.min : null,

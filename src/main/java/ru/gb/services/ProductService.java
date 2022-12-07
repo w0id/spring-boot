@@ -20,8 +20,7 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow();
     }
 
-    public Product addProduct(String name, double cost) {
-        Product product = new Product(name, cost);
+    public Product save(Product product) {
         return productRepository.save(product);
     }
 
@@ -38,11 +37,5 @@ public class ProductService {
             spec = spec.and(ProductsSpecifications.costLessThenOrEqualsThen(max));
         }
         return productRepository.findAll(spec, PageRequest.of(page - 1, 10, Sort.by("id").ascending()));
-    }
-
-    public void changeCost(final Long productId, final Integer delta) {
-        Product product = productRepository.findById(productId).orElseThrow();
-        product.setCost(product.getCost() + delta);
-        productRepository.save(product);
     }
 }

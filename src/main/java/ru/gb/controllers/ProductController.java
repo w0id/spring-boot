@@ -4,21 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.data.Product;
+import ru.gb.dto.ProductDto;
 import ru.gb.services.ProductService;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    public ProductDto getProduct(@PathVariable Long id) {
+        return new ProductDto(productService.getProduct(id));
     }
 
     @GetMapping
-    public Page<Product> getProducts(
+    public Page<ProductDto> getProducts(
             @RequestParam(value = "min",required = false) Double min,
             @RequestParam(value = "max",required = false) Double max,
             @RequestParam(value = "p", defaultValue = "1") Integer page
@@ -26,21 +27,27 @@ public class ProductController {
         if (page < 1) {
             page = 1;
         }
-        return productService.getProductFilter(min, max, page);
+        return productService.getProductFilter(min, max, page).map(
+                p -> new ProductDto(p)
+        );
     }
 
     @PostMapping
-    public Product addProduct(@RequestParam String name, @RequestParam double cost) {
-        return productService.addProduct(name, cost);
+    public ProductDto addProduct(@RequestBody ProductDto productDto) {
+        productService.save(new Product(productDto.getName(), productDto.getCost()));
+        return productDto;
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void delProduct(@PathVariable Long id) {
         productService.delProduct(id);
     }
 
-    @PostMapping("/change_cost")
-    public void changeCost(@RequestParam Long productId, @RequestParam Integer delta) {
-        productService.changeCost(productId, delta);
+    @PutMapping
+    public ProductDto changeCost(@RequestBody ProductDto productDto) {
+        Product product = productService.getProduct(productDto.getId());
+        product.setCost(productDto.getCost());
+        productService.save(product);
+        return productDto;
     }
 }
