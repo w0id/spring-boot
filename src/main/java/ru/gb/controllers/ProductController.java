@@ -28,7 +28,7 @@ public class ProductController {
             page = 1;
         }
         return productService.getProductFilter(min, max, page).map(
-                p -> new ProductDto(p)
+                ProductDto::new
         );
     }
 
