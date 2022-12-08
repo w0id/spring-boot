@@ -51,13 +51,50 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
             }
         })
             .then(function (response) {
-                $scope.ProductsList = response.data.content;
+                $scope.productsList = response.data.content;
                 $scope.page = response.data.pageable.pageNumber + 1;
                 $scope.totalPages = response.data.totalPages;
                 if ($scope.page > $scope.totalPages) {
                     $scope.page = $scope.totalPages -1;
                 }
                 $scope.count = response.data.content.length;
+            });
+    };
+
+    $scope.loadCartItems = function () {
+        $http.get(contextPath + 'cart_items')
+            .then(function (response) {
+                $scope.cartItemsList = response.data;
+                $scope.cartItemsCount = response.data.length;
+            });
+    };
+
+    $scope.addToCart = function (id, name, cost) {
+        body = JSON.stringify(
+            {
+                id: id,
+                name: name,
+                cost: cost
+            }
+        );
+        $http.post(contextPath + 'cart_items', body)
+            .then(function (response) {
+                $scope.loadCartItems();
+            });
+    }
+
+    $scope.deleteFromCart = function (id, name, cost) {
+        $http({
+            url: contextPath + 'cart_items',
+            method: 'DELETE',
+            params: {
+                id: id,
+                name: name,
+                cost: cost
+            }
+        })
+            .then(function (response) {
+                $scope.loadCartItems();
             });
     };
 

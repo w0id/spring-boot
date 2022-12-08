@@ -7,6 +7,7 @@ import ru.gb.data.Product;
 import ru.gb.dto.ProductDto;
 import ru.gb.services.ProductService;
 
+
 @RestController
 @RequestMapping("/api/v1/products")
 public class ProductController {

@@ -48,7 +48,7 @@
             <td>Действие</td>
         </tr>
         <tbody>
-        <tr ng-repeat="p in ProductsList">
+        <tr ng-repeat="p in productsList">
             <td>{{p.id}}</td>
             <td>{{p.name}}</td>
             <td>
@@ -57,7 +57,7 @@
                 <button class="btn btn-outline-primary" ng-click="changeCost(p, 10)">+</button>
             </td>
             <td>
-                <button class="btn btn-outline-danger" ng-click="deleteProduct(p.id)">Снять с продажи</button>
+                <button class="btn btn-outline-danger" ng-click="addToCart(p.id, p.name, p.cost)">Добавить в корзину</button>
             </td>
         </tr>
         </tbody>
@@ -77,6 +77,28 @@
         </div>
     </div>
     </form>
+<!--    Корзина -->
+    <P/>
+    <h3>Корзина</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>ID</td>
+            <td>Наименование товара</td>
+            <td>Стоимость</td>
+            <td>Действие</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="c in cartItemsList">
+            <td>{{c.id}}</td>
+            <td>{{c.name}}</td>
+            <td>
+                {{c.cost}}
+            </td>
+            <td><button class="btn btn-outline-danger" ng-click="deleteFromCart(c.id, c.name, c.cost)">Убрать из корзины</button></td>
+        </tr>
+        </tbody>
+    </table>
+    <h5>Товаров в корзине: {{cartItemsCount}}</h5>
     <footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
     </footer>
 </div>
