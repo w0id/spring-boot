@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="app">
+<html ng-app="app" >
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="index.js"></script>
+    <script src="users.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 </head>
 <body>
 
-<div class="container" ng-controller="indexController">
+<div class="container" ng-controller="usersController">
     <nav class="py-2 bg-light border-bottom">
         <div class="container d-flex flex-wrap">
             <ul class="nav me-auto">
@@ -39,59 +39,46 @@
         </div>
     </header>
     <p/>
-    <div class="container" ng-controller="range">
-        <input type="text" class="js-range-slider" name="my_range" value=""
-               data-type="double"
-               data-min="0"
-               data-max="1000"
-               data-from="0"
-               data-to="1000"
-               data-grid="true"
-        />
-    </div>
-    <h5>Список товаров</h5>
+    <h5>Список пользователей</h5>
     <h5>{{total_count}}</h5>
     <table class="table table-hover" cellpadding="0" cellspacing="0">
         <tr>
             <td>ID</td>
-            <td>Наименование товара</td>
-            <td>Стоимость</td>
+            <td>Имя пользователя</td>
+            <td>Email</td>
             <td>Действие</td>
         </tr>
         <tbody>
-        <tr ng-repeat="p in productsList">
-            <td>{{p.id}}</td>
-            <td>{{p.name}}</td>
+        <tr ng-repeat="u in usersList">
+            <td>{{u.id}}</td>
+            <td>{{u.username}}</td>
             <td>
-                {{p.cost}}
+                {{u.email}}
             </td>
             <td>
-                <button class="btn btn-outline-danger" ng-click="addToCart(p.id, p.name, p.cost)">Добавить в корзину</button>
+                <button class="btn btn-outline-danger" ng-click="deleteUser(u.id)">Удалить пользователя</button>
             </td>
         </tr>
         </tbody>
     </table>
-    <P/>
-    <h3>Корзина</h3>
-    <table class="table table-hover" cellpadding="0" cellspacing="0">
-        <tr>
-            <td>ID</td>
-            <td>Наименование товара</td>
-            <td>Стоимость</td>
-            <td>Действие</td>
-        </tr>
-        <tbody>
-        <tr ng-repeat="c in cartItemsList">
-            <td>{{c.id}}</td>
-            <td>{{c.name}}</td>
-            <td>
-                {{c.cost}}
-            </td>
-            <td><button class="btn btn-outline-danger" ng-click="deleteFromCart(c.id, c.name, c.cost)">Убрать из корзины</button></td>
-        </tr>
-        </tbody>
-    </table>
-    <h5>Товаров в корзине: {{cartItemsCount}}</h5>
+    <h5>Всего пользователей: {{count}}</h5>
+    <p>
+    <form ng-submit="addUser($element.action)">
+    <div class="row g-3 align-items-center">
+        <div class="col-auto">
+            <input class="form-control" ng-model="data.Username" id="username" placeholder="Имя пользователя" required type="text"/>
+        </div>
+        <div class="col-auto">
+            <input class="form-control" ng-model="data.Password" id="password" placeholder="Пароль" required type="text"/>
+        </div>
+        <div class="col-auto">
+            <input class="form-control" ng-model="data.Email" id="email" placeholder="Email" required type="text"/>
+        </div>
+        <div class="col-auto">
+            <input class="btn btn-outline-success" type="submit" value="Добавить пользователя">
+        </div>
+    </div>
+    </form>
     <footer class="d-flex flex-wrap justify-content-center align-items-center py-3 my-4 border-top">
     </footer>
 </div>

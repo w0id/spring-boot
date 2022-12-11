@@ -1,6 +1,6 @@
 package ru.gb.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.data.Product;
 import ru.gb.services.ProductService;
@@ -9,8 +9,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/cart_items")
+@AllArgsConstructor
 public class CartController {
-    @Autowired
     private ProductService productService;
 
     @GetMapping

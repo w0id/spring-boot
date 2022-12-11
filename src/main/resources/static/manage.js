@@ -1,6 +1,43 @@
-angular.module('app', []).controller('indexController', function ($scope, $document, $http) {
+angular.module('app', []).controller('manageController', function ($scope, $document, $http) {
     const contextPath = 'http://localhost:9099/app/api/v1/'
     $scope.filter = {}
+
+    $scope.deleteProduct = function (productId) {
+        $http.delete(contextPath + 'products/' + productId)
+            .then(function (response) {
+                $scope.setActive(true);
+                $scope.loadProducts(1);
+            });
+    }
+
+    $scope.changeCost = function (product, delta) {
+        body = JSON.stringify(
+            {
+                id: product.id,
+                name: product.name,
+                cost: product.cost + delta
+            }
+        );
+        $http.put(contextPath + 'products', body)
+            .then(function (response) {
+                $scope.loadProducts($scope.page);
+                $scope.data = {};
+            });
+    }
+
+    $scope.addProduct = function (form) {
+        body = JSON.stringify(
+            {
+                name: $scope.data.Name,
+                cost: $scope.data.Cost
+            }
+        );
+        $http.post(contextPath + 'products', body)
+            .then(function (response) {
+                    $scope.loadProducts($scope.page);
+                    $scope.data = {};
+                });
+    }
 
     $scope.loadProducts = function (page) {
         $scope.page = page;
@@ -21,44 +58,6 @@ angular.module('app', []).controller('indexController', function ($scope, $docum
                     $scope.page = $scope.totalPages -1;
                 }
                 $scope.count = response.data.content.length;
-                $scope.loadCartItems()
-            });
-    };
-
-    $scope.loadCartItems = function () {
-        $http.get(contextPath + 'cart_items')
-            .then(function (response) {
-                $scope.cartItemsList = response.data;
-                $scope.cartItemsCount = response.data.length;
-            });
-    };
-
-    $scope.addToCart = function (id, name, cost) {
-        body = JSON.stringify(
-            {
-                id: id,
-                name: name,
-                cost: cost
-            }
-        );
-        $http.post(contextPath + 'cart_items', body)
-            .then(function (response) {
-                $scope.loadCartItems();
-            });
-    }
-
-    $scope.deleteFromCart = function (id, name, cost) {
-        $http({
-            url: contextPath + 'cart_items',
-            method: 'DELETE',
-            params: {
-                id: id,
-                name: name,
-                cost: cost
-            }
-        })
-            .then(function (response) {
-                $scope.loadCartItems();
             });
     };
 

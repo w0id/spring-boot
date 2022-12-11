@@ -1,7 +1,8 @@
 package ru.gb.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.data.Product;
 import ru.gb.dto.ProductDto;
@@ -10,8 +11,9 @@ import ru.gb.services.ProductService;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@EnableGlobalAuthentication
+@AllArgsConstructor
 public class ProductController {
-    @Autowired
     private ProductService productService;
 
     @GetMapping("/{id}")

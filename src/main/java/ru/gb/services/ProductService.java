@@ -1,6 +1,6 @@
 package ru.gb.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,13 +14,13 @@ import ru.gb.repositories.specifications.ProductsSpecifications;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ProductService {
 
-    @Autowired
     private IProductRepository productRepository;
 
-    @Autowired
     private Cart cart;
+
 
     public List<Product> getCartItems() {
         return cart.getCartItems();
